@@ -9,7 +9,9 @@ Outputs key performance metrics (e.g. thrust), and generates temperature and pre
 - Uses a GUI built on Tkinter for easy usage
 
 ## Demo
+With all fields blank:
+<img width="990" height="782" alt="Screenshot 2025-09-08 164126" src="https://github.com/user-attachments/assets/56669b20-339b-400b-99c5-59162a80e564" />
 
-<img width="772" height="371" alt="Screenshot 2025-09-07 155126" src="https://github.com/user-attachments/assets/dd3edafa-e7a7-4302-9ddc-9acda87be3d2" />
 
-<img width="721" height="426" alt="Screenshot 2025-09-07 155833" src="https://github.com/user-attachments/assets/18981b27-64e2-4486-8753-1b2003084b02" />
+After inputting all parameters:
+<img width="1332" height="779" alt="Screenshot 2025-09-08 164604" src="https://github.com/user-attachments/assets/a046e117-7b07-4b78-b54e-b65f8b100a71" />
