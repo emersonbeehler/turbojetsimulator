@@ -26,71 +26,75 @@ def calculate_stages(values):
     # Initialize static variables
     gamma = 1.4
     cp = 1005 # J/kg/K
+    R = 287.0
 
-    # Set fuel LHV
+    # Set fuel LHV. Units: MJ/kg
     match fueltype:
         case "JP-8 (military standard)":
-            LHV = 42.8 #MJ/kg
+            LHV = 42.8
         case "Jet-A (civilian standard)":
             LHV = 43.2
 
     # Convert airspeed from km/h to m/s
     u = u / 3.6
 
-    # Atmospheric conditions
-    T_0 = 288.15 - (0.0065) * z
-    P_0 = (101.325) * ((T_0 / 288.15) ** 5.256)
-    p = P_0 / 287.0 / T_0 * 1000
+    # -- Stage by stage calculations -- 
+    # Static atmospheric conditions
+    T_0 = 288.15 - (0.0065 * z) # K
+    P_0 = (101.325) * ((T_0 / 288.15) ** 5.256) # kPa
+    rho = (P_0 * 1000)/ (R * T_0) # kg/m^3
+    mdot = rho * u * A # mass flow (kg/s)
 
-    # Inlet
-    mdot = p * u * A
-    ke_0 = 0.5 * (u ** 2)
-    P_1 = P_0
-    T_1 = T_0
+    # Inlet (0 -> 1)
+    P_1 = P_0 # static pressure
+    T_1 = T_0 # static temperature
     
-    # Diffuser
-    T_2 = (ke_0 / cp) + T_0
-    P_2 = P_0 * ((T_2 / T_0) ** (gamma / (gamma - 1)))
+    # Diffuser (1 -> 2) (converts KE -> stagnation pressure + temperature)
+    ke_0 = 0.5 * (u ** 2) # specific KE (J/kg)
+    Tt_2 = T_1 + (ke_0 / cp)
+    Pt_2 = P_1 * (Tt_2 / T_1) ** (gamma / (gamma - 1))
 
-    # Compressor
-    P_3 = PRc * P_2
-    T_3s = T_2 * (PRc ** ((gamma - 1) / gamma))
-    T_3 = ((T_3s - T_2) / eta_c) + T_2
+    # Compressor (2 -> 3)
+    Pt_3 = PRc * Pt_2
+    Tt_3s = Tt_2 * (PRc ** ((gamma - 1) / gamma)) # isentropic
+    Tt_3 = Tt_2 + ((Tt_3s - Tt_2) / eta_c) # actual w/efficiency
 
-    # Combustion
-    P_4 = P_3   
-    T_4 = T_max
+    # Combustion (3 -> 4)
+    Pt_4 = Pt_3 # assume no pressure loss
+    Tt_4 = T_max # assume temperature brought to max TIT
 
-    # Turbine
-    T_5 = T_4 - T_3 + T_2
-    T_5s = T_4 - ((T_4 - T_5) / eta_t)
-    P_5 = P_4 * ((T_5s / T_4) ** (gamma / (gamma - 1)))
+    # Turbine (4 -> 5)
+    Tt_5s = Tt_4 - (Tt_3 - Tt_2) # Ideal turbine extracts enough work to drive compressor
+    Tt_5 = Tt_4 - ((Tt_4 - Tt_5s) / eta_t)
+    Pt_5 = Pt_4 * ((Tt_5s / Tt_4) ** (gamma / (gamma - 1)))
 
-    # Nozzle
-    T_e = T_5 * ((P_0 / P_5) ** ((gamma - 1) / gamma))
-    v = np.sqrt(2 * cp * (T_5 - T_e))
+    # Nozzle (5 -> e)
+    T_e = Tt_5 * ((P_0 / Pt_5) ** ((gamma - 1) / gamma))
+    v = np.sqrt(2 * cp * (Tt_5 - T_e))
 
-    ## Performance Metrics
+    # -- Performance Metrics --
     # Thrust
     F = mdot * (v - u)
 
-    # Fuel Calculations
-    Tt_3 = T_3 + (u ** 2) / (2 * cp)
-    Tt_4 = T_4 + (u ** 2) / (2 * cp)
-    mdot_f = (mdot * cp * (Tt_4 - Tt_3)) / (eta_comb * LHV * 1000000) # convert LHV from MJ to J
-    SFC = mdot_f / F * 1000000 # g/s/kN
+    # Required Fuel Mass Flow Rate (kg/s)
+    mdot_f = (mdot * cp * (Tt_4 - Tt_3)) / (eta_comb * LHV * 1000000) # converted LHV from MJ to J
+
+    # Specific Fuel Consumption (g/s/kN)
+    SFC = mdot_f / F * 1000000
 
     # Efficiency Calculations
-    eta_th = (1 - (T_0 / T_3))
+    eta_th = (1 - (T_0 / Tt_3))
     eta_prop = (2 / (1 + (v / u)))
     eta_overall = eta_th * eta_prop
+
+    # Normalize efficiencies
     eta_th = eta_th * 100
     eta_prop = eta_prop * 100
     eta_overall = eta_overall * 100
 
     results = {
-        "T_0" : T_0, "P_0" : P_0, "T_1" : T_1, "P_1" : P_1, "T_2" : T_2, "P_2" : P_2,
-        "T_3" : T_3, "P_3" : P_3, "T_4" : T_4, "P_4" : P_4, "T_5s" : T_5s, "T_5" : T_5, "P_5" : P_5,
+        "T_0" : T_0, "P_0" : P_0, "T_1" : T_1, "P_1" : P_1, "T_2" : Tt_2, "P_2" : Pt_2,
+        "T_3" : Tt_3, "P_3" : Pt_3, "T_4" : Tt_4, "P_4" : Pt_4, "T_5" : Tt_5, "P_5" : Pt_5,
         "T_e" : T_e, "v" : v, "F" : F, "mdot_f" : mdot_f, "SFC" : SFC, "eta_th" : eta_th,
         "eta_prop" : eta_prop, "eta_overall" : eta_overall,
     }
