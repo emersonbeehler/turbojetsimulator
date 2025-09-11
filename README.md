@@ -24,7 +24,7 @@ With all fields blank:
 
 
 After inputting all parameters (example):
-<img width="1918" height="855" alt="Screenshot 2025-09-09 131314" src="https://github.com/user-attachments/assets/d6b59eec-bb64-471d-ab54-4de93705ec7c" />
+<img width="1917" height="839" alt="Screenshot 2025-09-11 160750" src="https://github.com/user-attachments/assets/9d5b3713-00ae-4b17-a6d3-f065c068253c" />
 
 ## Usage
 Run the Python app:
