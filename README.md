@@ -31,4 +31,6 @@ Note: numbers are not based off any real life engine.
 Run the Python app:
   -> python src/main.py
 
+Please note that with certain numbers, the app may output nonreal numbers. This is due to certain parameters causing unrealistic physics, such as the compressor pressure ratio, turbine temperature, or others.
+
 
