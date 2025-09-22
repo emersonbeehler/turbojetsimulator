@@ -5,7 +5,7 @@ Outputs key performance metrics (e.g. thrust), and generates temperature and pre
 
 ## Features
 - Calculates thrust, exhaust velocity, required fuel mass flow rate, specific fuel consumption, thermal efficiency, propulsive efficiency, and overall efficiency.
-- Visualizees temperature and pressure throughout the engine cycle with graphs.
+- Visualizes temperature and pressure throughout the engine cycle with graphs.
 - Uses a GUI built on Tkinter for easy usage
 - Dynamically created GUI allowing for easy addition of inputs or performance metrics
 
@@ -16,15 +16,16 @@ I began this project with zero thermodynamics or fluid dynamics knowledge. I use
 
 My goal was to not simply be able to plug in inputs and output arbitrary numbers, but to actually understand the underlying thermodynamic concepts and processes behind a turbojet engine, as well as understand the derivation of common equations, such as for thrust.
 
-I decided to consolidate my learning into a Python app as a way to practice my coding, as well as create an actual product that can be used to explore how various design choices impact the performance and efficiency of a turbojet engine.
+I decided to consolidate my learning into a Python app to practice my coding, as well as create a functional tool that can be used to explore how various design choices impact the performance and efficiency of a turbojet engine.
 
 ## Demo
-With all fields blank:
+Initial GUI:
 <img width="1919" height="867" alt="Screenshot 2025-09-09 131202" src="https://github.com/user-attachments/assets/a6a16e67-4f86-4d6c-98f5-2b91aeb2e60b" />
 
 
-After inputting all parameters (example):
+Example Input & Output:
 <img width="1917" height="839" alt="Screenshot 2025-09-11 160750" src="https://github.com/user-attachments/assets/9d5b3713-00ae-4b17-a6d3-f065c068253c" />
+Note: numbers are not based off any real life engine.
 
 ## Usage
 Run the Python app:
