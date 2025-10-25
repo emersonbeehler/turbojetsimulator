@@ -1,7 +1,6 @@
 # Turbojet Engine Performance Simulator
 
-Python app that uses user-defined parameters to calculate the performance of a turbojet engine using the ideal Brayton cycle.
-Outputs key performance metrics (e.g. thrust), and generates temperature and pressure graphs for each stage in the cycle.
+Python based app that takes user inputs for flight and engine parameters, performs stage-by-stage thermodynamic calculations, and displays key performance metrics and plots of temperature and pressure across the engine.
 
 ## Features
 - Calculates thrust, exhaust velocity, required fuel mass flow rate, specific fuel consumption, thermal efficiency, propulsive efficiency, and overall efficiency.
