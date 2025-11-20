@@ -30,6 +30,18 @@ Note: numbers are not based off any real life engine.
 Run the Python app:
   -> python src/main.py
 
+Suggested Inputs:
+Airspeed: 900 km/h
+Altitude: 10,000 m
+Inlet Area: 0.45 m^2
+Compressor Pressure Ratio: 20
+Turbine Inlet Temperature: 1400 K
+Compressor Isentropic Efficiency: 90%
+Turbine Isentropic Efficiency: 90%
+Fuel Combustion Efficiency: 99%
+Fuel Type: JP-8
+
+
 Please note that with certain numbers, the app may output nonreal numbers. This is due to certain parameters causing unrealistic physics, such as the compressor pressure ratio, turbine temperature, or others.
 
 
